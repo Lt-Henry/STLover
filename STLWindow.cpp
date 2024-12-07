@@ -24,6 +24,7 @@
 #include "STLInputWindow.h"
 #include "STLRepairWindow.h"
 #include "STLToolBar.h"
+#include "ObjLoader.h"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -1529,18 +1530,28 @@ STLWindow::_FileLoaderFunction(void *data)
 {
 	STLWindow *window = (STLWindow*)data;
 
-	stl_file *stl = new stl_file;
-
-	stl_open(stl, (char*)window->Filename().String());
-
-	if (stl_get_error(stl)) {
-		window->SetSTL(NULL);
-		window->PostMessage(MSG_FILE_OPEN_FAILED);
-		delete stl;
-	} else {
-		stl_fix_normal_values(stl);
+	BString filename = window->Filename();
+	
+	if (filename.EndsWith(".obj")) {
+		std::clog<<"loading obj..."<<filename.String()<<std::endl;
+		stl_file* stl = LoadObj(filename.String());
 		window->SetSTL(stl);
 		window->PostMessage(MSG_FILE_OPENED);
+	}
+	else {
+		stl_file *stl = new stl_file;
+
+		stl_open(stl, (char*)filename.String());
+
+		if (stl_get_error(stl)) {
+			window->SetSTL(NULL);
+			window->PostMessage(MSG_FILE_OPEN_FAILED);
+			delete stl;
+		} else {
+			stl_fix_normal_values(stl);
+			window->SetSTL(stl);
+			window->PostMessage(MSG_FILE_OPENED);
+		}
 	}
 
 	return 0;

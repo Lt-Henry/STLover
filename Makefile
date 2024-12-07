@@ -1,7 +1,7 @@
 NAME = STLover
 TYPE = APP
 APP_MIME_SIG = application/x-vnd.stlover
-SRCS = STLApp.cpp STLInputWindow.cpp STLWindow.cpp STLToolBar.cpp STLStatView.cpp STLRepairWindow.cpp STLLogoView.cpp STLView.cpp main.cpp
+SRCS = STLApp.cpp STLInputWindow.cpp STLWindow.cpp STLToolBar.cpp STLStatView.cpp STLRepairWindow.cpp STLLogoView.cpp STLView.cpp  ObjLoader.cpp main.cpp
 RDEFS = Resources.rdef
 LIBS = be shared tracker localestub GL GLU glut admesh $(STDCPPLIBS)
 SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/interface
